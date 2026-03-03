@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afritalk — Learn African Languages Through Living Tradition</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #C4622D;
+    --gold: #D4A017;
+    --deep-brown: #1A0A00;
+    --warm-cream: #F7EDD8;
+    --sienna: #8B3A0F;
+    --sage: #5C7A4E;
+    --indigo: #2D3B6B;
+    --sand: #E8D5A3;
+    --charcoal: #2C1A0E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--deep-brown);
+    color: var(--warm-cream);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.35;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: linear-gradient(to bottom, rgba(26,10,0,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--terracotta); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sand);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--terracotta);
+    color: var(--warm-cream);
+    border: none;
+    padding: 0.65rem 1.4rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--sienna); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(196,98,45,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(212,160,23,0.08) 0%, transparent 60%),
+      linear-gradient(160deg, var(--deep-brown) 0%, #2C1008 50%, #1A0A00 100%);
+  }
+
+  /* Kente-inspired decorative stripe */
+  .hero-stripe {
+    position: absolute;
+    top: 0; right: 0;
+    width: 3px;
+    height: 100%;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--gold) 0px, var(--gold) 20px,
+      var(--terracotta) 20px, var(--terracotta) 40px,
+      var(--sage) 40px, var(--sage) 60px,
+      var(--deep-brown) 60px, var(--deep-brown) 80px
+    );
+  }
+
+  .hero-left {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 5rem 6rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    margin-bottom: 1.2rem;
+    color: var(--warm-cream);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--terracotta);
+    display: block;
+  }
+  .hero-title .gold-word { color: var(--gold); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--sand);
+    max-width: 420px;
+    margin-bottom: 3rem;
+    opacity: 0.88;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--terracotta);
+    color: var(--warm-cream);
+    border: none;
+    padding: 1rem 2.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(196,98,45,0.4); }
+
+  .btn-ghost {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--sand);
+    border: 1px solid rgba(232,213,163,0.3);
+    padding: 1rem 2.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-right {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 4rem 5rem 2rem;
+  }
+
+  /* Adinkra-style decorative circle */
+  .hero-circle {
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(212,160,23,0.2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rotate-slow 40s linear infinite;
+  }
+  .hero-circle::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border-radius: 50%;
+    border: 1px dashed rgba(196,98,45,0.3);
+    animation: rotate-slow 25s linear infinite reverse;
+  }
+
+  @keyframes rotate-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .circle-inner {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, rgba(196,98,45,0.3), rgba(26,10,0,0.8));
+    border: 1px solid rgba(212,160,23,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    animation: rotate-slow 40s linear infinite reverse;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .proverb-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gold);
+  }
+  .proverb-lang {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-top: 0.5rem;
+  }
+
+  /* Orbiting dots */
+  .orbit-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .orbit-dot:nth-child(1) { top: -4px; left: 50%; transform: translateX(-50%); }
+  .orbit-dot:nth-child(2) { bottom: -4px; left: 50%; transform: translateX(-50%); background: var(--terracotta); }
+  .orbit-dot:nth-child(3) { left: -4px; top: 50%; transform: translateY(-50%); background: var(--sage); }
+
+  /* ── LANGUAGE TICKER ── */
+  .ticker {
+    background: var(--terracotta);
+    padding: 0.8rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    gap: 4rem;
+    animation: ticker 25s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-cream);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .ticker-item::after {
+    content: '◆';
+    color: rgba(247,237,216,0.5);
+    font-size: 0.5rem;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION BASE ── */
+  section {
+    position: relative;
+    padding: 6rem 6rem;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 40px;
+    height: 1px;
+    background: var(--terracotta);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--warm-cream);
+    max-width: 600px;
+  }
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  /* ── HOW IT WORKS ── */
+  .how-section {
+    background: linear-gradient(160deg, #1A0A00 0%, #261305 100%);
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+  }
+
+  .how-card {
+    background: rgba(232,213,163,0.03);
+    border: 1px solid rgba(232,213,163,0.08);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: all 0.4s;
+    cursor: default;
+  }
+  .how-card:hover {
+    background: rgba(196,98,45,0.07);
+    border-color: rgba(196,98,45,0.3);
+    transform: translateY(-4px);
+  }
+
+  .how-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(212,160,23,0.12);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    transition: color 0.4s;
+  }
+  .how-card:hover .how-number { color: rgba(212,160,23,0.25); }
+
+  .how-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .how-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--warm-cream);
+    margin-bottom: 0.8rem;
+  }
+
+  .how-desc {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(232,213,163,0.65);
+  }
+
+  /* ── LANGUAGES ── */
+  .languages-section {
+    background: var(--charcoal);
+  }
+
+  .lang-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+    margin-bottom: 4rem;
+  }
+
+  .lang-body {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: rgba(232,213,163,0.75);
+    margin-top: 2rem;
+  }
+
+  .lang-stat {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--terracotta);
+    line-height: 1;
+  }
+  .lang-stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-top: 0.3rem;
+    opacity: 0.7;
+  }
+  .lang-stats { display: flex; flex-direction: column; gap: 2.5rem; padding-top: 1rem; }
+
+  .lang-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .lang-chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid rgba(232,213,163,0.15);
+    color: var(--sand);
+    background: transparent;
+    transition: all 0.3s;
+    cursor: default;
+    position: relative;
+  }
+  .lang-chip:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(212,160,23,0.05);
+  }
+  .lang-chip.featured {
+    border-color: var(--terracotta);
+    color: var(--warm-cream);
+    background: rgba(196,98,45,0.12);
+  }
+
+  /* ── METHODS ── */
+  .methods-section {
+    background: linear-gradient(180deg, #1A0A00 0%, var(--deep-brown) 100%);
+  }
+
+  .methods-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 4rem;
+  }
+
+  .method-card {
+    padding: 3.5rem 3rem;
+    background: rgba(232,213,163,0.02);
+    border: 1px solid rgba(232,213,163,0.06);
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 2rem;
+    align-items: start;
+    transition: all 0.4s;
+  }
+  .method-card:hover {
+    background: rgba(232,213,163,0.04);
+    border-color: rgba(212,160,23,0.2);
+  }
+
+  .method-glyph {
+    width: 60px;
+    height: 60px;
+    border: 1px solid rgba(212,160,23,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .method-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--warm-cream);
+    margin-bottom: 0.6rem;
+  }
+  .method-name em { color: var(--gold); font-style: normal; }
+
+  .method-desc {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: rgba(232,213,163,0.65);
+    margin-bottom: 1rem;
+  }
+
+  .method-sample {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--terracotta);
+    border-left: 2px solid var(--terracotta);
+    padding-left: 1rem;
+    line-height: 1.6;
+  }
+  .method-sample span {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-style: normal;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(196,98,45,0.6);
+    margin-top: 0.3rem;
+  }
+
+  /* ── PRICING ── */
+  .pricing-section {
+    background: var(--charcoal);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+    max-width: 900px;
+  }
+
+  .price-card {
+    padding: 3rem 2.5rem;
+    background: rgba(232,213,163,0.02);
+    border: 1px solid rgba(232,213,163,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.4s;
+  }
+  .price-card.featured {
+    background: rgba(196,98,45,0.08);
+    border-color: var(--terracotta);
+  }
+  .price-card:hover { transform: translateY(-4px); }
+
+  .price-tier {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--warm-cream);
+    line-height: 1;
+  }
+  .price-amount sup {
+    font-size: 1.2rem;
+    vertical-align: top;
+    margin-top: 0.5rem;
+    color: var(--sand);
+  }
+  .price-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--sand);
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+  }
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex: 1;
+  }
+  .price-features li {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: rgba(232,213,163,0.7);
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+  }
+  .price-features li::before {
+    content: '→';
+    color: var(--terracotta);
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+  .price-btn {
+    margin-top: 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.9rem;
+    border: 1px solid rgba(232,213,163,0.2);
+    background: transparent;
+    color: var(--sand);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+  .price-btn:hover, .price-card.featured .price-btn {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    color: var(--warm-cream);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0D0500;
+    padding: 4rem 6rem;
+    border-top: 1px solid rgba(232,213,163,0.06);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .footer-brand .nav-logo { font-size: 1.8rem; display: block; margin-bottom: 1rem; }
+  .footer-tagline {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(232,213,163,0.45);
+    max-width: 260px;
+  }
+
+  .footer-col-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .footer-links a {
+    font-size: 0.88rem;
+    color: rgba(232,213,163,0.5);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--sand); }
+
+  .footer-bottom {
+    background: #0D0500;
+    padding: 1.5rem 6rem;
+    border-top: 1px solid rgba(232,213,163,0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: rgba(232,213,163,0.25);
+    text-transform: uppercase;
+  }
+
+  /* ── ENTRANCE ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* stagger delays */
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+
+  /* ── TESTIMONIAL STRIP ── */
+  .testimonial-strip {
+    padding: 4rem 6rem;
+    background: rgba(196,98,45,0.06);
+    border-top: 1px solid rgba(196,98,45,0.1);
+    border-bottom: 1px solid rgba(196,98,45,0.1);
+  }
+  .testimonial-inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+  .testimonial-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .testimonial-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--sand);
+  }
+  .testimonial-author {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    footer { padding: 3rem 1.5rem; grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { padding: 1.2rem 1.5rem; flex-direction: column; gap: 0.5rem; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { display: none; }
+    .hero-left { padding: 7rem 1.5rem 4rem; }
+    .how-grid { grid-template-columns: 1fr 1fr; }
+    .lang-intro { grid-template-columns: 1fr; gap: 2rem; }
+    .methods-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 360px; }
+    .testimonial-inner { grid-template-columns: 1fr; }
+    .testimonial-strip { padding: 3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>Afri</span>talk</a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#languages">Languages</a></li>
+    <li><a href="#methods">Methods</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <button class="nav-cta">Start Learning</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripe"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">Language Lives in the Voice</div>
+    <h1 class="hero-title">
+      Learn Africa's<br>
+      <em>Living</em>
+      <span class="gold-word">Languages</span>
+    </h1>
+    <p class="hero-sub">
+      Through stories passed under starlight, proverbs carried across centuries, 
+      and songs that hold an entire world — Afritalk teaches language the way it 
+      was always meant to be learned: orally.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary">Begin Your Journey</button>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-circle">
+      <div class="orbit-dot"></div>
+      <div class="orbit-dot"></div>
+      <div class="orbit-dot"></div>
+      <div class="circle-inner">
+        <div class="proverb-text">"Anansi knows all stories, because he gave them to the world."</div>
+        <div class="proverb-lang">Akan Proverb · Ghana</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item">Swahili</div>
+    <div class="ticker-item">Yoruba</div>
+    <div class="ticker-item">Amharic</div>
+    <div class="ticker-item">Zulu</div>
+    <div class="ticker-item">Igbo</div>
+    <div class="ticker-item">Hausa</div>
+    <div class="ticker-item">Wolof</div>
+    <div class="ticker-item">Twi</div>
+    <div class="ticker-item">Shona</div>
+    <div class="ticker-item">Somali</div>
+    <div class="ticker-item">Afrikaans</div>
+    <div class="ticker-item">Tigrinya</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item">Swahili</div>
+    <div class="ticker-item">Yoruba</div>
+    <div class="ticker-item">Amharic</div>
+    <div class="ticker-item">Zulu</div>
+    <div class="ticker-item">Igbo</div>
+    <div class="ticker-item">Hausa</div>
+    <div class="ticker-item">Wolof</div>
+    <div class="ticker-item">Twi</div>
+    <div class="ticker-item">Shona</div>
+    <div class="ticker-item">Somali</div>
+    <div class="ticker-item">Afrikaans</div>
+    <div class="ticker-item">Tigrinya</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="section-label">The Method</div>
+  <h2 class="section-title">Learning that <em>feels</em> ancient — and works.</h2>
+
+  <div class="how-grid">
+    <div class="how-card fade-up">
+      <div class="how-number">01</div>
+      <div class="how-icon">👂</div>
+      <div class="how-name">Listen First</div>
+      <div class="how-desc">Every lesson begins with immersive listening. Native speakers tell stories, sing songs, and recite proverbs in their mother tongue — just as tradition demands.</div>
+    </div>
+    <div class="how-card fade-up delay-1">
+      <div class="how-number">02</div>
+      <div class="how-icon">🗣️</div>
+      <div class="how-name">Speak & Repeat</div>
+      <div class="how-desc">Guided oral repetition builds natural pronunciation, rhythm, and tonal accuracy. No reading required in the early stages — just your voice, finding its way.</div>
+    </div>
+    <div class="how-card fade-up delay-2">
+      <div class="how-number">03</div>
+      <div class="how-icon">🌿</div>
+      <div class="how-name">Understand Context</div>
+      <div class="how-desc">Stories and proverbs carry cultural memory. You learn not just words but the world they come from — history, values, and the human dimension of each language.</div>
+    </div>
+    <div class="how-card fade-up delay-3">
+      <div class="how-number">04</div>
+      <div class="how-icon">💬</div>
+      <div class="how-name">Daily Conversation</div>
+      <div class="how-desc">Structured daily dialogue practice with AI companions and live tutors brings fluency from culture to the street — markets, homes, workplaces.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section class="languages-section" id="languages">
+  <div class="lang-intro">
+    <div>
+      <div class="section-label">Our Library</div>
+      <h2 class="section-title">2,000+ languages. We're starting where it matters <em>most.</em></h2>
+      <p class="lang-body">
+        Africa is home to over a third of the world's languages. Many exist only in oral tradition — never written, yet intricate, poetic, and very much alive. Afritalk begins with the most widely spoken, then expands deeper into the continent's rich linguistic heritage.
+      </p>
+    </div>
+    <div class="lang-stats">
+      <div>
+        <div class="lang-stat">54</div>
+        <div class="lang-stat-label">Countries Represented</div>
+      </div>
+      <div>
+        <div class="lang-stat">12</div>
+        <div class="lang-stat-label">Launch Languages</div>
+      </div>
+      <div>
+        <div class="lang-stat">500+</div>
+        <div class="lang-stat-label">Native Speaker Hours</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lang-grid">
+    <div class="lang-chip featured">Swahili</div>
+    <div class="lang-chip featured">Yoruba</div>
+    <div class="lang-chip featured">Amharic</div>
+    <div class="lang-chip featured">Zulu</div>
+    <div class="lang-chip featured">Hausa</div>
+    <div class="lang-chip">Igbo</div>
+    <div class="lang-chip">Twi / Akan</div>
+    <div class="lang-chip">Wolof</div>
+    <div class="lang-chip">Shona</div>
+    <div class="lang-chip">Somali</div>
+    <div class="lang-chip">Tigrinya</div>
+    <div class="lang-chip">Xhosa</div>
+    <div class="lang-chip">Coming Soon: Luganda</div>
+    <div class="lang-chip">Coming Soon: Bambara</div>
+    <div class="lang-chip">Coming Soon: Fula</div>
+  </div>
+</section>
+
+<!-- METHODS -->
+<section class="methods-section" id="methods">
+  <div class="section-label">Four Pillars</div>
+  <h2 class="section-title">The oral arts that <em>carry</em> a language.</h2>
+
+  <div class="methods-grid">
+    <div class="method-card fade-up">
+      <div class="method-glyph">📖</div>
+      <div>
+        <div class="method-name"><em>Oral Storytelling</em></div>
+        <div class="method-desc">
+          Across Africa, the griot, the elder, the mother — they teach through story. Our curated tales span creation myths, trickster fables, and everyday narratives. You learn vocabulary, grammar, and emotion in context, not isolation.
+        </div>
+        <div class="method-sample">
+          "Hadithi, hadithi — hadithi njoo!"
+          <span>Swahili story-opening call · East Africa</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-card fade-up delay-1">
+      <div class="method-glyph">🎵</div>
+      <div>
+        <div class="method-name"><em>Songs & Rhythm</em></div>
+        <div class="method-desc">
+          Music imprints language deeply. Tonal languages like Yoruba and Shona are partly encoded in music. Our song lessons use lullabies, work songs, ceremonial chants, and contemporary African music to make grammar and vocabulary unforgettable.
+        </div>
+        <div class="method-sample">
+          "Ise agbe, ise ni baba iṣẹ..."
+          <span>Yoruba work song · Nigeria</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-card fade-up delay-2">
+      <div class="method-glyph">🌾</div>
+      <div>
+        <div class="method-name"><em>Proverbs & Wisdom</em></div>
+        <div class="method-desc">
+          "Proverbs are the daughters of experience." Each African language holds thousands of proverbs — compact, rhythmic, and deeply meaningful. Learning proverbs builds fluency, cultural intelligence, and a connection to living wisdom.
+        </div>
+        <div class="method-sample">
+          "Ubuntu ngumuntu ngabantu."
+          <span>Zulu proverb — "A person is a person through others" · South Africa</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-card fade-up delay-3">
+      <div class="method-glyph">☀️</div>
+      <div>
+        <div class="method-name"><em>Daily Conversation</em></div>
+        <div class="method-desc">
+          Morning greetings, market bargaining, family dinner, calling a friend — real-life dialogue scenarios build the practical fluency to navigate life in your target language. Practice with AI conversation partners or live native tutors.
+        </div>
+        <div class="method-sample">
+          "Habari za asubuhi? — Nzuri, asante!"
+          <span>Swahili morning greeting exchange · East Africa</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<div class="testimonial-strip">
+  <div class="testimonial-inner">
+    <div class="testimonial-item fade-up">
+      <div class="testimonial-quote">"I grew up hearing Yoruba at home but could never speak it. Three months with Afritalk and I called my grandmother and held a full conversation. She cried."</div>
+      <div class="testimonial-author">Adaeze M. — London, UK</div>
+    </div>
+    <div class="testimonial-item fade-up delay-1">
+      <div class="testimonial-quote">"The proverbs module changed everything for me. I didn't just learn Swahili — I started understanding how people actually think. That's rare in language learning."</div>
+      <div class="testimonial-author">Thomas R. — Nairobi, Kenya</div>
+    </div>
+    <div class="testimonial-item fade-up delay-2">
+      <div class="testimonial-quote">"As a researcher working in West Africa, my Hausa improved faster with Afritalk's oral methods than three years of textbook study. Context is everything."</div>
+      <div class="testimonial-author">Dr. Priya N. — Lagos, Nigeria</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-label">Plans</div>
+  <h2 class="section-title">Choose your <em>path</em> to fluency.</h2>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">Explorer</div>
+      <div class="price-amount"><sup>$</sup>0</div>
+      <div class="price-period">/ Forever free</div>
+      <ul class="price-features">
+        <li>1 language of your choice</li>
+        <li>20 story lessons</li>
+        <li>10 proverb cards</li>
+        <li>Basic daily conversations</li>
+        <li>AI practice partner (limited)</li>
+      </ul>
+      <div class="price-btn">Get Started Free</div>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-tier">Storyteller ★</div>
+      <div class="price-amount"><sup>$</sup>14</div>
+      <div class="price-period">/ per month</div>
+      <ul class="price-features">
+        <li>3 languages simultaneously</li>
+        <li>Full story & song library</li>
+        <li>Complete proverb collection</li>
+        <li>Unlimited AI conversation</li>
+        <li>2 live tutor sessions / month</li>
+        <li>Downloadable audio lessons</li>
+      </ul>
+      <div class="price-btn">Start 14-Day Trial</div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-tier">Elder</div>
+      <div class="price-amount"><sup>$</sup>38</div>
+      <div class="price-period">/ per month</div>
+      <ul class="price-features">
+        <li>All languages, unlimited</li>
+        <li>Priority live tutor access</li>
+        <li>Cultural immersion modules</li>
+        <li>Early access to new languages</li>
+        <li>Community teaching tools</li>
+        <li>Offline mode + downloads</li>
+      </ul>
+      <div class="price-btn">Go Elder</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a class="nav-logo" href="#"><span>Afri</span>talk</a>
+    <p class="footer-tagline">Language lives in the voice. We help it travel across generations and across the world.</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Learn</div>
+    <ul class="footer-links">
+      <li><a href="#">How Afritalk Works</a></li>
+      <li><a href="#">Language Library</a></li>
+      <li><a href="#">Meet Our Tutors</a></li>
+      <li><a href="#">For Schools</a></li>
+      <li><a href="#">For Diaspora Communities</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Company</div>
+    <ul class="footer-links">
+      <li><a href="#">Our Story</a></li>
+      <li><a href="#">Teach on Afritalk</a></li>
+      <li><a href="#">Blog & Stories</a></li>
+      <li><a href="#">Press</a></li>
+      <li><a href="#">Contact Us</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 Afritalk · Preserving oral tradition, one voice at a time.</span>
+  <span class="footer-copy">Privacy · Terms · Cookies</span>
+</div>
+
+<script>
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Rotating proverbs in hero circle
+  const proverbs = [
+    { text: '"Anansi knows all stories, because he gave them to the world."', lang: 'Akan Proverb · Ghana' },
+    { text: '"Ubuntu ngumuntu ngabantu — a person is a person through others."', lang: 'Zulu Proverb · South Africa' },
+    { text: '"Wisdom is like a baobab tree; no one individual can embrace it."', lang: 'Akan Proverb · Ghana' },
+    { text: '"Hadithi, hadithi — hadithi njoo, uongo njoo, utamu kolea."', lang: 'Swahili Saying · East Africa' },
+    { text: '"He who learns, teaches."', lang: 'Ethiopian Proverb · Amharic' },
+  ];
+  let proverbIndex = 0;
+  const proverbEl = document.querySelector('.proverb-text');
+  const proverbLangEl = document.querySelector('.proverb-lang');
+
+  setInterval(() => {
+    proverbEl.style.opacity = '0';
+    proverbLangEl.style.opacity = '0';
+    setTimeout(() => {
+      proverbIndex = (proverbIndex + 1) % proverbs.length;
+      proverbEl.textContent = proverbs[proverbIndex].text;
+      proverbLangEl.textContent = proverbs[proverbIndex].lang;
+      proverbEl.style.opacity = '1';
+      proverbLangEl.style.opacity = '1';
+    }, 600);
+  }, 4500);
+
+  proverbEl.style.transition = 'opacity 0.6s';
+  proverbLangEl.style.transition = 'opacity 0.6s';
+</script>
+
+</body>
+</html>
