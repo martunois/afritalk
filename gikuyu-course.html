@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gĩkũyũ Course — AfriTalk</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #C4622D;
+    --gold: #D4A017;
+    --deep-brown: #1A0A00;
+    --warm-cream: #F7EDD8;
+    --sienna: #8B3A0F;
+    --sage: #5C7A4E;
+    --sand: #E8D5A3;
+    --charcoal: #2C1A0E;
+    --sidebar-w: 280px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--deep-brown);
+    color: var(--warm-cream);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    background: rgba(26,10,0,0.97);
+    border-bottom: 1px solid rgba(232,213,163,0.08);
+    padding: 1rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .nav-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sand);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s;
+  }
+  .nav-back:hover { color: var(--gold); }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--terracotta); }
+  .nav-enroll {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--terracotta);
+    color: var(--warm-cream);
+    border: none;
+    padding: 0.6rem 1.3rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+  }
+  .nav-enroll:hover { background: var(--sienna); }
+
+  /* ── LAYOUT ── */
+  .app-body {
+    display: flex;
+    flex: 1;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: #0D0500;
+    border-right: 1px solid rgba(232,213,163,0.06);
+    position: sticky;
+    top: 57px;
+    height: calc(100vh - 57px);
+    overflow-y: auto;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(232,213,163,0.1); border-radius: 2px; }
+
+  .sidebar-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid rgba(232,213,163,0.06);
+  }
+  .sidebar-course-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--warm-cream);
+    margin-bottom: 0.3rem;
+  }
+  .sidebar-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .stage-group { border-bottom: 1px solid rgba(232,213,163,0.04); }
+  .stage-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    padding: 1rem 1.5rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .week-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    color: rgba(232,213,163,0.45);
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+  .week-link:hover { color: var(--sand); background: rgba(232,213,163,0.03); }
+  .week-link.active { color: var(--warm-cream); background: rgba(196,98,45,0.12); border-left: 2px solid var(--terracotta); }
+  .week-num {
+    font-size: 0.55rem;
+    color: rgba(232,213,163,0.25);
+    width: 18px;
+    flex-shrink: 0;
+  }
+  .week-link.active .week-num { color: var(--terracotta); }
+
+  .vocab-link {
+    display: block;
+    margin: 1rem 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.7rem;
+    border: 1px solid rgba(212,160,23,0.3);
+    color: var(--gold);
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    background: none;
+    width: calc(100% - 3rem);
+  }
+  .vocab-link:hover { background: rgba(212,160,23,0.08); }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  /* ── HERO BANNER ── */
+  .course-hero {
+    background: linear-gradient(135deg, #2C1A0E 0%, #1A0A00 60%, #261008 100%);
+    border-bottom: 1px solid rgba(212,160,23,0.1);
+    padding: 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .course-hero::before {
+    content: '';
+    position: absolute;
+    right: -100px;
+    top: -100px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(212,160,23,0.08);
+  }
+  .course-hero::after {
+    content: '';
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 1px dashed rgba(196,98,45,0.1);
+  }
+  .hero-flag { font-size: 3rem; margin-bottom: 1rem; }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.8rem;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 900;
+    color: var(--warm-cream);
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+  }
+  .hero-title em { color: var(--gold); font-style: italic; }
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: rgba(232,213,163,0.65);
+    max-width: 560px;
+    margin-bottom: 2rem;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(232,213,163,0.15);
+    color: rgba(232,213,163,0.55);
+  }
+  .hero-tag.featured { border-color: var(--gold); color: var(--gold); }
+
+  /* ── LESSON PANEL ── */
+  .lesson-panel { padding: 3.5rem 5rem; max-width: 820px; }
+
+  .lesson-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(232,213,163,0.07);
+  }
+  .lesson-week-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.6rem;
+  }
+  .lesson-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--warm-cream);
+    margin-bottom: 0.4rem;
+  }
+  .lesson-theme {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+  }
+
+  /* Content blocks */
+  .content-section { margin-bottom: 2.5rem; }
+  .content-section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .content-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(196,98,45,0.2);
+  }
+  .content-body {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: rgba(232,213,163,0.75);
+  }
+  .content-body p { margin-bottom: 1rem; }
+
+  /* Proverb block */
+  .proverb-block {
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.5rem;
+    background: rgba(212,160,23,0.04);
+    margin: 1.5rem 0;
+  }
+  .proverb-block .gk {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .proverb-block .en {
+    font-size: 0.85rem;
+    color: rgba(232,213,163,0.55);
+  }
+
+  /* Phrase table */
+  .phrase-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2rem 0;
+  }
+  .phrase-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(196,98,45,0.2);
+  }
+  .phrase-table td {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(232,213,163,0.05);
+    color: rgba(232,213,163,0.75);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .phrase-table td:first-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--warm-cream);
+  }
+  .phrase-table tr:hover td { background: rgba(232,213,163,0.02); }
+
+  /* Activity box */
+  .activity-box {
+    background: rgba(92,122,78,0.08);
+    border: 1px solid rgba(92,122,78,0.2);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .activity-box-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.6rem;
+  }
+  .activity-box p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(232,213,163,0.7);
+    margin: 0;
+  }
+
+  /* Insight box */
+  .insight-box {
+    background: rgba(196,98,45,0.06);
+    border: 1px solid rgba(196,98,45,0.15);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .insight-box-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.6rem;
+  }
+  .insight-box p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(232,213,163,0.7);
+    margin: 0;
+  }
+
+  /* Goal box */
+  .goal-box {
+    background: rgba(212,160,23,0.05);
+    border: 1px solid rgba(212,160,23,0.2);
+    padding: 1.2rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .goal-box-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .goal-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .goal-list li {
+    font-size: 0.88rem;
+    color: rgba(232,213,163,0.7);
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .goal-list li::before { content: '✅'; font-size: 0.7rem; margin-top: 0.1rem; }
+
+  /* Dialogue */
+  .dialogue-block {
+    background: rgba(26,10,0,0.5);
+    border: 1px solid rgba(232,213,163,0.08);
+    padding: 1.5rem;
+    margin: 1.2rem 0;
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+  .dialogue-block .speaker { color: var(--terracotta); font-family: 'Space Mono', monospace; font-size: 0.62rem; }
+  .dialogue-block .gk-line { color: var(--warm-cream); font-family: 'Playfair Display', serif; font-size: 0.95rem; }
+  .dialogue-block .en-line { color: rgba(232,213,163,0.4); font-size: 0.78rem; font-style: italic; }
+  .dialogue-block .pair { margin-bottom: 1rem; }
+
+  /* Vocab grid */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 1.2rem 0;
+  }
+  .vocab-card {
+    background: rgba(232,213,163,0.02);
+    border: 1px solid rgba(232,213,163,0.06);
+    padding: 1rem 1.2rem;
+    transition: all 0.3s;
+  }
+  .vocab-card:hover { background: rgba(196,98,45,0.05); border-color: rgba(196,98,45,0.2); }
+  .vocab-gk {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--warm-cream);
+    margin-bottom: 0.2rem;
+  }
+  .vocab-en {
+    font-size: 0.78rem;
+    color: rgba(232,213,163,0.5);
+    margin-bottom: 0.2rem;
+  }
+  .vocab-tone {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  /* Stage overview */
+  .stage-overview {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    margin: 2rem 0;
+  }
+  .stage-card {
+    padding: 1.5rem 1.2rem;
+    background: rgba(232,213,163,0.02);
+    border: 1px solid rgba(232,213,163,0.06);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .stage-card:hover { background: rgba(196,98,45,0.06); border-color: rgba(196,98,45,0.2); }
+  .stage-card.active-stage { background: rgba(196,98,45,0.1); border-color: var(--terracotta); }
+  .stage-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: rgba(212,160,23,0.15);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .stage-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(232,213,163,0.55);
+    margin-bottom: 0.3rem;
+  }
+  .stage-weeks {
+    font-size: 0.75rem;
+    color: rgba(232,213,163,0.35);
+  }
+
+  /* Week navigator */
+  .week-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(232,213,163,0.07);
+  }
+  .week-nav-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--sand);
+    border: 1px solid rgba(232,213,163,0.15);
+    padding: 0.7rem 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .week-nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Vocab full page */
+  .vocab-page { padding: 3.5rem 5rem; display: none; }
+  .vocab-page.visible { display: block; }
+  .vocab-section { margin-bottom: 3rem; }
+  .vocab-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--warm-cream);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(232,213,163,0.08);
+  }
+  .vocab-full-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  /* Syllabus overview */
+  .syllabus-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .syllabus-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    padding: 0.7rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(196,98,45,0.2);
+    background: rgba(196,98,45,0.04);
+  }
+  .syllabus-table td {
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(232,213,163,0.04);
+    color: rgba(232,213,163,0.7);
+    vertical-align: top;
+  }
+  .syllabus-table tr:hover td { background: rgba(232,213,163,0.02); }
+  .syllabus-table td:first-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .syllabus-table td:nth-child(2) {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    color: var(--warm-cream);
+  }
+
+  /* Mobile */
+  .sidebar-toggle {
+    display: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    background: none;
+    border: 1px solid rgba(232,213,163,0.2);
+    color: var(--sand);
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; position: fixed; top: 57px; left: 0; bottom: 0; z-index: 150; width: 280px; }
+    .sidebar.open { display: flex; }
+    .sidebar-toggle { display: block; }
+    .course-hero { padding: 2.5rem 1.5rem; }
+    .lesson-panel { padding: 2rem 1.5rem; }
+    .vocab-page { padding: 2rem 1.5rem; }
+    .stage-overview { grid-template-columns: 1fr 1fr; }
+    .vocab-grid { grid-template-columns: 1fr; }
+    .vocab-full-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a class="nav-back" href="afritalk.html">← Back to Afritalk</a>
+  <a class="nav-logo" href="afritalk.html"><span>Afri</span>talk</a>
+  <div style="display:flex;gap:0.8rem;align-items:center;">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Lessons</button>
+    <a class="nav-enroll" href="#">Enroll Free</a>
+  </div>
+</nav>
+
+<div class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-name">🇰🇪 Gĩkũyũ Course</div>
+      <div class="sidebar-meta">40 Weeks · Oral-First</div>
+    </div>
+
+    <!-- Overview links -->
+    <div class="stage-group" style="padding: 0.5rem 0;">
+      <button class="week-link active" onclick="showView('overview')">
+        <span class="week-num">→</span> Course Overview
+      </button>
+      <button class="week-link" onclick="showView('vocab')">
+        <span class="week-num">→</span> 100 Core Words
+      </button>
+    </div>
+
+    <!-- Stage 1 -->
+    <div class="stage-group">
+      <div class="stage-label">Stage 1 · Awaken the Ear</div>
+      <button class="week-link" onclick="showWeek(1)"><span class="week-num">W1</span> Why Gĩkũyũ Matters</button>
+      <button class="week-link" onclick="showWeek(2)"><span class="week-num">W2</span> Greetings & Respect</button>
+      <button class="week-link" onclick="showWeek(3)"><span class="week-num">W3</span> Tone, Flow & Meaning</button>
+      <button class="week-link" onclick="showWeek(4)"><span class="week-num">W4</span> At the Market</button>
+      <button class="week-link" onclick="showWeek(5)"><span class="week-num">W5</span> Kikuyu Music</button>
+      <button class="week-link" onclick="showWeek(6)"><span class="week-num">W6</span> Stage 1 Review</button>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="stage-group">
+      <div class="stage-label">Stage 2 · Speak Before You Read</div>
+      <button class="week-link" onclick="showWeek(7)"><span class="week-num">W7</span> Family & Kinship</button>
+      <button class="week-link" onclick="showWeek(8)"><span class="week-num">W8</span> Homes & Architecture</button>
+      <button class="week-link" onclick="showWeek(9)"><span class="week-num">W9</span> Appearance & Adornment</button>
+      <button class="week-link" onclick="showWeek(10)"><span class="week-num">W10</span> Health & Healing</button>
+      <button class="week-link" onclick="showWeek(11)"><span class="week-num">W11</span> Livelihoods & Trade</button>
+      <button class="week-link" onclick="showWeek(12)"><span class="week-num">W12</span> Stage 2 Review</button>
+    </div>
+
+    <!-- Stage 3 -->
+    <div class="stage-group">
+      <div class="stage-label">Stage 3 · Rooted Grammar</div>
+      <button class="week-link" onclick="showWeek(13)"><span class="week-num">W13</span> Pronouns & Possession</button>
+      <button class="week-link" onclick="showWeek(14)"><span class="week-num">W14</span> Verbs & Tenses</button>
+      <button class="week-link" onclick="showWeek(15)"><span class="week-num">W15</span> Affirmative & Negative</button>
+      <button class="week-link" onclick="showWeek(16)"><span class="week-num">W16</span> Proverbs & Wisdom</button>
+      <button class="week-link" onclick="showWeek(17)"><span class="week-num">W17</span> Food & Culinary Identity</button>
+      <button class="week-link" onclick="showWeek(18)"><span class="week-num">W18</span> Festivals & Ceremonies</button>
+      <button class="week-link" onclick="showWeek(19)"><span class="week-num">W19</span> Nature, Land & Ethics</button>
+      <button class="week-link" onclick="showWeek(20)"><span class="week-num">W20</span> Mid-Year Review</button>
+    </div>
+
+    <!-- Stage 4 -->
+    <div class="stage-group">
+      <div class="stage-label">Stage 4 · Storyflow</div>
+      <button class="week-link" onclick="showWeek(21)"><span class="week-num">W21</span> Storytelling Basics</button>
+      <button class="week-link" onclick="showWeek(22)"><span class="week-num">W22</span> Folklore & Spirits</button>
+      <button class="week-link" onclick="showWeek(23)"><span class="week-num">W23</span> Marriage & Society</button>
+      <button class="week-link" onclick="showWeek(24)"><span class="week-num">W24</span> Music, Dance & Performance</button>
+      <button class="week-link" onclick="showWeek(25)"><span class="week-num">W25</span> Proverbs (Advanced)</button>
+      <button class="week-link" onclick="showWeek(26)"><span class="week-num">W26</span> Modern Kikuyu Slang</button>
+      <button class="week-link" onclick="showWeek(27)"><span class="week-num">W27–30</span> "My Kikuyu Story" Project</button>
+    </div>
+
+    <!-- Stage 5 -->
+    <div class="stage-group">
+      <div class="stage-label">Stage 5 · Cultural Activation</div>
+      <button class="week-link" onclick="showWeek(31)"><span class="week-num">W31</span> Gĩkũyũ in the City</button>
+      <button class="week-link" onclick="showWeek(32)"><span class="week-num">W32</span> Fashion & Design</button>
+      <button class="week-link" onclick="showWeek(33)"><span class="week-num">W33</span> The Food Business</button>
+      <button class="week-link" onclick="showWeek(34)"><span class="week-num">W34</span> Gĩkũyũ in the Diaspora</button>
+      <button class="week-link" onclick="showWeek(35)"><span class="week-num">W35</span> Proverbs (Mastery)</button>
+      <button class="week-link" onclick="showWeek(36)"><span class="week-num">W36</span> Advanced Idioms & Humor</button>
+      <button class="week-link" onclick="showWeek(37)"><span class="week-num">W37</span> Final Fluency: Oral</button>
+      <button class="week-link" onclick="showWeek(38)"><span class="week-num">W38</span> Final Fluency: Story</button>
+      <button class="week-link" onclick="showWeek(39)"><span class="week-num">W39</span> Gĩkũyũ Identity Today</button>
+      <button class="week-link" onclick="showWeek(40)"><span class="week-num">W40</span> Celebration & Certification</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ══ OVERVIEW VIEW ══ -->
+    <div id="view-overview">
+      <div class="course-hero">
+        <div class="hero-flag">🇰🇪</div>
+        <div class="hero-eyebrow">AfriTalk Flagship Course</div>
+        <h1 class="hero-title">Gĩkũyũ — <em>The Living Language</em></h1>
+        <p class="hero-subtitle">
+          40 weeks. 5 stages. Built from the inside — by a daughter learning her mother's tongue so she could finally answer the butcher who greeted her with <em>"Ũhoro..."</em> without stammering. Language as identity. Learning as homecoming.
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag featured">Oral-First</span>
+          <span class="hero-tag">40 Weeks</span>
+          <span class="hero-tag">5 Stages</span>
+          <span class="hero-tag">100 Core Words</span>
+          <span class="hero-tag">Proverbs & Songs</span>
+          <span class="hero-tag">Cultural Context</span>
+          <span class="hero-tag">Kikuyu Tonal System</span>
+        </div>
+      </div>
+
+      <div class="lesson-panel">
+        <div class="content-section">
+          <div class="content-section-title">Why This Course Exists</div>
+          <div class="content-body">
+            <p>Gĩkũyũ is one of Kenya's most widely spoken languages — and one of its most at-risk among younger generations. Many Kikuyu people in their 20s and 30s, especially in cities and diaspora, understand fragments of the language but cannot speak it confidently. They grew up hearing it but weren't taught in it.</p>
+            <p>This course was built for them. And for anyone who wants to connect with Gĩkũyũ culture, oral wisdom, and the people who carry it.</p>
+          </div>
+
+          <div class="proverb-block">
+            <div class="gk">"Gũtirĩ mũndũ ũrĩa ũngĩmenyeka ũtarĩ na rurimi rwe."</div>
+            <div class="en">No one can truly be known without their language.</div>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-section-title">The 5 Stages</div>
+          <div class="stage-overview">
+            <div class="stage-card active-stage" onclick="showWeek(1)">
+              <div class="stage-num">1</div>
+              <div class="stage-name">Awaken the Ear</div>
+              <div class="stage-weeks">Weeks 1–6</div>
+            </div>
+            <div class="stage-card" onclick="showWeek(7)">
+              <div class="stage-num">2</div>
+              <div class="stage-name">Speak Before You Read</div>
+              <div class="stage-weeks">Weeks 7–12</div>
+            </div>
+            <div class="stage-card" onclick="showWeek(13)">
+              <div class="stage-num">3</div>
+              <div class="stage-name">Rooted Grammar</div>
+              <div class="stage-weeks">Weeks 13–20</div>
+            </div>
+            <div class="stage-card" onclick="showWeek(21)">
+              <div class="stage-num">4</div>
+              <div class="stage-name">Storyflow</div>
+              <div class="stage-weeks">Weeks 21–30</div>
+            </div>
+            <div class="stage-card" onclick="showWeek(31)">
+              <div class="stage-num">5</div>
+              <div class="stage-name">Cultural Activation</div>
+              <div class="stage-weeks">Weeks 31–40</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="content-section-title">Full 40-Week Syllabus</div>
+          <table class="syllabus-table">
+            <thead><tr><th>Week</th><th>Theme</th><th>Cultural Focus & Goal</th></tr></thead>
+            <tbody>
+              <tr><td>W1</td><td>Why Gĩkũyũ Matters</td><td>Identity, heritage, belonging. Greet in multiple ways.</td></tr>
+              <tr><td>W2</td><td>Greetings & Respect</td><td>Elders' respect, morning vs. evening greetings. Hold a natural greeting exchange.</td></tr>
+              <tr><td>W3</td><td>Sound System & Tones</td><td>Oral storytelling, tonal accuracy, the Kikuyu Flip. Distinguish meaning through tone.</td></tr>
+              <tr><td>W4</td><td>At the Market</td><td>Market as social hub, bargaining rhythm. Simulate a bargaining conversation.</td></tr>
+              <tr><td>W5</td><td>Kikuyu Music</td><td>Traditional & modern songs (Mwomboko, Mũthirîgî). Translate and perform one verse.</td></tr>
+              <tr><td>W6</td><td>Stage 1 Review</td><td>Tone + pronunciation quiz. Ear challenge with natural speech clips.</td></tr>
+              <tr><td>W7</td><td>Family & Kinship</td><td>Traditional vs. modern family structure. Describe your family.</td></tr>
+              <tr><td>W8</td><td>Homes & Architecture</td><td>Gĩkũyũ homestead design, symbolism. Describe a Gĩkũyũ home.</td></tr>
+              <tr><td>W9</td><td>Appearance & Adornment</td><td>Traditional dress, symbolism of hairstyles. Compare modern vs. traditional attire.</td></tr>
+              <tr><td>W10</td><td>Health & Body</td><td>Basic healing and wellness phrases. Describe a minor ailment and ask for help.</td></tr>
+              <tr><td>W11</td><td>Livelihoods & Trade</td><td>Farmers, blacksmiths, entrepreneurship. Role-play a trade scene.</td></tr>
+              <tr><td>W12</td><td>Stage 2 Review</td><td>Watch/listen to a Gĩkũyũ conversation. Summarize the core message.</td></tr>
+              <tr><td>W13</td><td>Pronouns & Possession</td><td>Using respect markers (ũhoro waku vs. wanyu). Attribute ownership correctly.</td></tr>
+              <tr><td>W14</td><td>Verbs & Tenses</td><td>How tone changes with tense. Narrate three events in different tenses.</td></tr>
+              <tr><td>W15</td><td>Affirmative & Negative</td><td>Mastering the Kikuyu Flip for negation. Switch any sentence positive/negative.</td></tr>
+              <tr><td>W16</td><td>Proverbs & Wisdom (Basic)</td><td>5 core proverbs with tone. Use one proverb naturally in conversation.</td></tr>
+              <tr><td>W17</td><td>Food & Culinary Identity</td><td>Cooking verbs, meals (ũcũrũ, gĩtheri, irio). Cook a Gĩkũyũ dish & narrate steps.</td></tr>
+              <tr><td>W18</td><td>Festivals & Ceremonies</td><td>Rites of passage, harvest rituals. Discuss traditional vs. modern ceremonies.</td></tr>
+              <tr><td>W19</td><td>Nature, Land & Ethics</td><td>Land (mũgũnda) as identity. Discuss Kirinyaga (Mt. Kenya).</td></tr>
+              <tr><td>W20</td><td>Mid-Year Review</td><td>Comprehensive performance review: Tenses, Pronouns, Core Vocabulary.</td></tr>
+              <tr><td>W21</td><td>Storytelling Basics</td><td>Structure of Ng'ano (traditional tales). Tell a short childhood story.</td></tr>
+              <tr><td>W22</td><td>Folklore & Spirits</td><td>Retell a myth in Gĩkũyũ. Describe the significance of Ngai.</td></tr>
+              <tr><td>W23</td><td>Marriage & Society</td><td>Songs, dances, gender roles in weddings. Describe a Gĩkũyũ wedding.</td></tr>
+              <tr><td>W24</td><td>Music, Dance & Performance</td><td>Traditional vs. urban Gĩkũyũ music. Create a short music video/skit.</td></tr>
+              <tr><td>W25</td><td>Proverbs (Advanced)</td><td>10 common proverbs for social intelligence. Use one in nuanced context.</td></tr>
+              <tr><td>W26</td><td>Modern Kikuyu Slang</td><td>Youth slang, code-switching. Switch between formal and street Gĩkũyũ.</td></tr>
+              <tr><td>W27–30</td><td>"My Kikuyu Story" Project</td><td>Create a video, blog, or audio about your personal Gĩkũyũ connection.</td></tr>
+              <tr><td>W31</td><td>Gĩkũyũ in the City</td><td>Urban slang, humor, TikTok culture. Contemporary social contexts.</td></tr>
+              <tr><td>W32</td><td>Fashion & Design</td><td>Traditional → Contemporary fusion fashion. Describe in Gĩkũyũ.</td></tr>
+              <tr><td>W33</td><td>The Food Business</td><td>Culinary pride, business terms. Record a family recipe with business vocabulary.</td></tr>
+              <tr><td>W34</td><td>Gĩkũyũ in the Diaspora</td><td>Challenges of maintaining language abroad. Interview/case studies.</td></tr>
+              <tr><td>W35</td><td>Proverbs (Mastery)</td><td>Complex proverbs in different emotional tones. Use wisdom sayings contextually.</td></tr>
+              <tr><td>W36</td><td>Advanced Idioms & Humor</td><td>Idioms that don't translate literally. Tell a Gĩkũyũ joke.</td></tr>
+              <tr><td>W37</td><td>Final Fluency: Oral</td><td>Unscripted conversation with a native speaker. 5 minutes sustained.</td></tr>
+              <tr><td>W38</td><td>Final Fluency: Story Performance</td><td>Deliver a compelling 3-minute Gĩkũyũ narrative to an audience.</td></tr>
+              <tr><td>W39</td><td>Gĩkũyũ Identity Today</td><td>What it means to be Gĩkũyũ in the 21st Century.</td></tr>
+              <tr><td>W40</td><td>Celebration & Certification</td><td>Showcase Day: Story, Song, Food, Final Reflection.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ WEEK VIEWS ══ -->
+    <div id="view-week" style="display:none;">
+      <div class="course-hero" id="weekHeroBanner">
+        <!-- filled by JS -->
+      </div>
+      <div class="lesson-panel" id="weekContent">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- ══ VOCAB VIEW ══ -->
+    <div id="view-vocab" style="display:none;">
+      <div class="course-hero">
+        <div class="hero-eyebrow">Core Vocabulary</div>
+        <h1 class="hero-title">100 Core Words — <em>HSK-Style List</em></h1>
+        <p class="hero-subtitle">Grouped by theme and aligned to your weekly lessons. Each word includes the Gĩkũyũ term, English translation, tone note, and suggested week.</p>
+      </div>
+      <div class="lesson-panel" style="max-width:100%;">
+        <div id="vocabContent"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── DATA ──
+const weeks = {
+  1: {
+    title: "Why Gĩkũyũ Matters",
+    theme: "The Power of Language and Identity",
+    stage: "Stage 1: Awaken the Ear",
+    hero: `<div class="hero-flag">🇰🇪</div><div class="hero-eyebrow">Week 1 · Stage 1: Awaken the Ear</div><h1 class="hero-title">Why Gĩkũyũ <em>Matters</em></h1><p class="hero-subtitle">Introductions, identity, connection to land (kirîra, mûciî). We begin not with grammar — but with why.</p>`,
+    content: `
+      <div class="lesson-header">
+        <div class="lesson-week-badge">Week 1 · Stage 1</div>
+        <div class="lesson-title">Why Gĩkũyũ Matters</div>
+        <div class="lesson-theme">The Power of Language and Identity</div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-title">Warm-Up — Why Learn Gĩkũyũ?</div>
+        <div class="proverb-block">
+          <div class="gk">"Gũtirĩ mũndũ ũrĩa ũngĩmenyeka ũtarĩ na rurimi rwe."</div>
+          <div class="en">No one can truly be known without their language.</div>
+        </div>
+        <div class="content-body">
+          <p>Gĩkũyũ is more than a way to communicate — it's how the Agĩkũyũ see, feel, and remember the world. Every Kikuyu word carries a story — of land, family, and spirit.</p>
+          <p>Learning Gĩkũyũ reconnects you to your <strong style="color:var(--warm-cream)">roots</strong> — ancestral names, songs, and wisdom; your <strong style="color:var(--warm-cream)">people</strong> — how Kikuyu express respect and belonging; and your <strong style="color:var(--warm-cream)">identity</strong> — speaking like your grandparents did shapes how you think.</p>
+        </div>
+        <div class="activity-box">
+          <div class="activity-box-label">🗣️ Reflection Activity</div>
+          <p>Think about someone in your family who speaks fluent Kikuyu. What do you feel when they speak? Write or record your thoughts — in any language.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-title">Sound & Flow — The Kikuyu Greeting Rhythm</div>
+        <div class="content-body"><p>The Kikuyu way of greeting isn't rushed. It's musical — full of tone and warmth. Each greeting is a small ritual of recognition.</p></div>
+        <table class="phrase-table">
+          <thead><tr><th>Gĩkũyũ Phrase</th><th>Meaning</th><th>Usage / Tone</th></tr></thead>
+          <tbody>
+            <tr><td>Wĩ mwega?</td><td>Are you well?</td><td>Neutral, polite</td></tr>
+            <tr><td>Wakũrũo atia?</td><td>How did you sleep?</td><td>Morning greeting</td></tr>
+            <tr><td>Wakīa!</td><td>Hail! / Hello!</td><td>Friendly or respectful</td></tr>
+            <tr><td>Thayu!</td><td>Peace be upon you</td><td>Most respectful — for elders</td></tr>
+            <tr><td>Nĩ wega.</td><td>I'm fine.</td><td>Response</td></tr>
+            <tr><td>Thayu nĩ waku.</td><td>Peace to you too.</td><td>Polite reply</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box">
+          <div class="insight-box-label">🎧 Pronunciation Tip</div>
+          <p>Kikuyu vowels are long and clear. Hold the sound a little: <em>wĩ mwe-gaa</em>, not <em>wi mwega</em>. The ear learns before the tongue follows.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-title">Culture Insight — Respect & Relationship</div>
+        <div class="content-body">
+          <p>Among the Kikuyu, greeting is not a formality — it's a ritual of recognition. You don't just say hello; you affirm peace and relationship.</p>
+          <p>The younger person always greets first. Elders reply with blessings, sometimes adding <em>"Ngai akũhe thayu"</em> (May God give you peace). The more respect you wish to show, the slower and softer your tone.</p>
+          <p>In traditional villages, no one passed another person silently — even strangers deserved a greeting.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-title">Practice — Conversation Drill</div>
+        <div class="dialogue-block">
+          <div class="pair">
+            <div class="speaker">A (Child):</div>
+            <div class="gk-line">Thayu, Cũcũ!</div>
+            <div class="en-line">Peace, grandmother!</div>
+          </div>
+          <div class="pair">
+            <div class="speaker">B (Elder):</div>
+            <div class="gk-line">Thayu waku, mwana wakwa!</div>
+            <div class="en-line">Peace to you too, my child!</div>
+          </div>
+          <div class="pair">
+            <div class="speaker">A:</div>
+            <div class="gk-line">Wĩ mwega?</div>
+            <div class="en-line">Are you well?</div>
+          </div>
+          <div class="pair">
+            <div class="speaker">B:</div>
+            <div class="gk-line">Nĩ wega, na ũ?</div>
+            <div class="en-line">I'm well, and you?</div>
+          </div>
+          <div class="pair">
+            <div class="speaker">A:</div>
+            <div class="gk-line">Nĩ wega muno.</div>
+            <div class="en-line">Very well.</div>
+          </div>
+        </div>
+        <div class="activity-box">
+          <div class="activity-box-label">🎭 Week Challenge</div>
+          <p>Record a short audio or video greeting an elder in Kikuyu (real or role-play). Focus on tone, warmth, and body language — gentle nod or clasped hands.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-title">Mini Vocabulary Deck — Week 1 Core 10</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><div class="vocab-gk">Thayu</div><div class="vocab-en">Peace</div><div class="vocab-tone">mid tone</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Wĩ mwega</div><div class="vocab-en">Are you well?</div><div class="vocab-tone">mid tone</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Nĩ wega</div><div class="vocab-en">Fine</div><div class="vocab-tone">mid</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Wakīa</div><div class="vocab-en">Hello / Hail</div><div class="vocab-tone">rising</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Mwana</div><div class="vocab-en">Child</div><div class="vocab-tone">low on -na</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Cũcũ</div><div class="vocab-en">Grandmother</div><div class="vocab-tone">affectionate flat</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Gũkũ</div><div class="vocab-en">Grandfather / Here</div><div class="vocab-tone">flat</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Maitũ</div><div class="vocab-en">Mother</div><div class="vocab-tone">low-low</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Baba</div><div class="vocab-en">Father</div><div class="vocab-tone">low-low</div></div>
+          <div class="vocab-card"><div class="vocab-gk">Ngai</div><div class="vocab-en">God</div><div class="vocab-tone">high</div></div>
+        </div>
+      </div>
+
+      <div class="goal-box">
+        <div class="goal-box-title">End-of-Week Goals</div>
+        <ul class="goal-list">
+          <li>Greet politely in Kikuyu — elder, peer, and child</li>
+          <li>Recognize when to use Thayu, Wĩ mwega, and Wakīa</li>
+          <li>Pronounce your Gĩkũyũ name correctly and share its meaning</li>
+          <li>Reflect on what "language as identity" means for you personally</li>
+        </ul>
+      </div>
+    `
+  },
+  2: {
+    title: "Greetings & Respect",
+    theme: "Greetings, Respect, and Family Warmth",
+    stage: "Stage 1: Awaken the Ear",
+    hero: `<div class="hero-flag">🇰🇪</div><div class="hero-eyebrow">Week 2 · Stage 1: Awaken the Ear</div><h1 class="hero-title">Greetings & <em>Respect</em></h1><p class="hero-subtitle">Elders' respect, morning vs. evening greetings. Goal: Hold a natural greeting exchange.</p>`,
+    content: `
+      <div class="lesson-header">
+        <div class="lesson-week-badge">Week 2 · Stage 1</div>
+        <div class="lesson-title">Greetings & Respect Language</div>
+        <div class="lesson-theme">Greetings, Respect, and Family Warmth</div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Core Phrases</div>
+        <table class="phrase-table">
+          <thead><tr><th>Gĩkũyũ</th><th>Meaning</th><th>Context</th></tr></thead>
+          <tbody>
+            <tr><td>Wakīa</td><td>Good morning (lit. "You've risen")</td><td>Morning only</td></tr>
+            <tr><td>Wĩ mwega?</td><td>Are you well?</td><td>Any time</td></tr>
+            <tr><td>Nĩ wega</td><td>I'm fine</td><td>Response</td></tr>
+            <tr><td>Thayu</td><td>Peace</td><td>Greeting & farewell</td></tr>
+            <tr><td>Wamũka atĩa?</td><td>How did you wake?</td><td>Morning</td></tr>
+            <tr><td>Nĩwakorwo ũrĩ wega</td><td>Be well</td><td>Parting wish</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Respect Hierarchy — Age & Status</div>
+        <div class="content-body"><p>Among the Kikuyu, greeting is an act of grounding — a way to affirm peace between you and the community. The younger person always greets first. Use kinship titles even with strangers: <em>Maitu</em> (mother), <em>Baba</em> (father), <em>Cũcũ</em> (grandmother), <em>Gũkũ</em> (grandfather).</p></div>
+        <div class="dialogue-block">
+          <div class="pair"><div class="speaker">Younger to Elder:</div><div class="gk-line">Wakīa maitu!</div><div class="en-line">Good morning, mother!</div></div>
+          <div class="pair"><div class="speaker">Younger to Elder:</div><div class="gk-line">Thayu baba.</div><div class="en-line">Peace, father.</div></div>
+        </div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Culture Insight</div>
+        <div class="insight-box">
+          <div class="insight-box-label">Thayu — More Than a Word</div>
+          <p>"Thayu" (peace) was not just a word — it was a wish, a blessing, and a moral responsibility. Silence before greeting was seen as tension; greeting restores balance.</p>
+        </div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Proverb of the Week</div>
+        <div class="proverb-block">
+          <div class="gk">"Mũndũ ũrĩ na thayũ nĩwe mũkũrũ."</div>
+          <div class="en">The one with peace is the elder.</div>
+        </div>
+      </div>
+      <div class="activity-box">
+        <div class="activity-box-label">🎭 Week Challenge</div>
+        <p>Record yourself greeting a "family" of three — elder, peer, child. Notice how your tone shifts for each. Share with #AfriTalkGikuyu.</p>
+      </div>
+      <div class="goal-box">
+        <div class="goal-box-title">End-of-Week Goals</div>
+        <ul class="goal-list">
+          <li>Hold a natural greeting exchange in Gĩkũyũ</li>
+          <li>Use correct kinship address titles (Maitu, Baba, Cũcũ)</li>
+          <li>Distinguish morning vs. evening greetings by tone and phrasing</li>
+        </ul>
+      </div>
+    `
+  },
+  3: {
+    title: "Tone, Flow & Meaning",
+    theme: "Don't Read Kikuyu — Hear It Breathe",
+    stage: "Stage 1: Awaken the Ear",
+    hero: `<div class="hero-flag">🇰🇪</div><div class="hero-eyebrow">Week 3 · Stage 1: Awaken the Ear</div><h1 class="hero-title">Tone, Flow & <em>Meaning</em></h1><p class="hero-subtitle">The Kikuyu tonal system — the "Kikuyu Flip," shadow tone, and the music inside the language.</p>`,
+    content: `
+      <div class="lesson-header">
+        <div class="lesson-week-badge">Week 3 · Stage 1</div>
+        <div class="lesson-title">The Music of Kikuyu: Tone, Flow & Meaning</div>
+        <div class="lesson-theme">"Don't Read Kikuyu — Hear It Breathe"</div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Cultural Anchor</div>
+        <div class="proverb-block">
+          <div class="gk">"Mũndũ nĩ mũrĩra wake."</div>
+          <div class="en">A person is their tone (or voice) — your vocal identity.</div>
+        </div>
+        <div class="content-body"><p>In Gĩkũyũ, <em>mũrĩra</em> means the melody or pitch of one's voice. How you say <em>thayũ</em> (peace) can make you sound calm, respectful — or foreign. Tone is not decoration; it is definition.</p></div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">High vs. Low Tones — Meaning Changes</div>
+        <table class="phrase-table">
+          <thead><tr><th>Tone</th><th>Word</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>High ↗️ Mũtí</td><td>mũtí</td><td>Tree</td></tr>
+            <tr><td>Low ↘️ Mũti</td><td>mũti</td><td>Medicine</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box">
+          <div class="insight-box-label">🎧 Drill</div>
+          <p>Listen to a native speaker say both words. Repeat 3 times each, exaggerating the pitch difference. Then alternate: mũtí, mũti, mũtí, mũti. The ear learns before the tongue follows.</p>
+        </div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">The Kikuyu Flip — Negation Reverses Tone</div>
+        <div class="content-body"><p>When you add the negation marker <em>tĩ-</em> or <em>tũtĩ-</em>, the melody inverts. What was high becomes low, what was low becomes high.</p></div>
+        <table class="phrase-table">
+          <thead><tr><th>Positive</th><th>Negative</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Twatómire magúta</td><td>Tũtítómire maguta</td><td>We sent oil / We didn't send oil</td></tr>
+            <tr><td>Twakágaya magúta</td><td>Tũtĩkágaya magũta</td><td>We divided oil / We didn't divide oil</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Grammar Markers Through Sound</div>
+        <table class="phrase-table">
+          <thead><tr><th>Marker</th><th>Example</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>nĩ-</td><td>Nĩngũrĩa</td><td>I will eat (future)</td></tr>
+            <tr><td>tũ-</td><td>Tũrĩtũmĩte</td><td>We have sent (past perfect)</td></tr>
+            <tr><td>tĩ- / tũtĩ-</td><td>Tũtĩkágaya</td><td>We didn't divide (negative)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="activity-box">
+        <div class="activity-box-label">🎵 Pop-Culture Anchor</div>
+        <p>Listen to "Thayũ" by Phy (modern Kikuyu pop). Notice how she stretches thayũ with a falling tone — matching the word's natural melody. Hum the melody first, then sing "Thayũ niwe wakwa" using the same pitch contour.</p>
+      </div>
+      <div class="insight-box">
+        <div class="insight-box-label">🌿 Wrap-Up Analogy</div>
+        <p>"Kikuyu tones are like footprints in wet earth — you see where the voice just was, not where it stands now."</p>
+      </div>
+      <div class="goal-box">
+        <div class="goal-box-title">End-of-Week Goals</div>
+        <ul class="goal-list">
+          <li>Distinguish meaning through tone (mũtí vs mũti)</li>
+          <li>Perform the Kikuyu Flip — switch a sentence from positive to negative by inverting tone</li>
+          <li>Sing "Thayũ niwe wakwa" with correct pitch contour</li>
+        </ul>
+      </div>
+    `
+  },
+  4: {
+    title: "At the Market",
+    theme: "Food, Prices, Counting — The Market as Social Hub",
+    stage: "Stage 1: Awaken the Ear",
+    hero: `<div class="hero-flag">🇰🇪</div><div class="hero-eyebrow">Week 4 · Stage 1: Awaken the Ear</div><h1 class="hero-title">At the <em>Market</em></h1><p class="hero-subtitle">Food, prices, counting (1–20). The market is more than trade — it's where Gĩkũyũ social life happens.</p>`,
+    content: `
+      <div class="lesson-header">
+        <div class="lesson-week-badge">Week 4 · Stage 1</div>
+        <div class="lesson-title">At the Market — Gũcokia kwa Marikiti</div>
+        <div class="lesson-theme">Food, Prices, Counting — The Market as Social Hub</div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Kikuyu Numbers — 1 to 10</div>
+        <div class="content-body"><p>In Gĩkũyũ, counting isn't mechanical — it's melodic. Vendors often sing their prices; buyers echo or challenge them in tone.</p></div>
+        <table class="phrase-table">
+          <thead><tr><th>Number</th><th>Gĩkũyũ</th><th>Tonal Pattern</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>ĩmwe</td><td>Low</td></tr>
+            <tr><td>2</td><td>igĩrĩ</td><td>High–Low</td></tr>
+            <tr><td>3</td><td>ithatu</td><td>Mid–Low</td></tr>
+            <tr><td>4</td><td>inya</td><td>High</td></tr>
+            <tr><td>5</td><td>ithano</td><td>High–Low</td></tr>
+            <tr><td>6</td><td>ithathatu</td><td>Rolling High–Low</td></tr>
+            <tr><td>7</td><td>mũgwanja</td><td>Low–High</td></tr>
+            <tr><td>8</td><td>inyanya</td><td>Low–High–Low</td></tr>
+            <tr><td>9</td><td>kenda</td><td>High</td></tr>
+            <tr><td>10</td><td>ikũmi</td><td>High–Low</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box">
+          <div class="insight-box-label">🎧 Mimic Drill</div>
+          <p>Listen once without repeating. Second time, hum the melody (no words). Third time, repeat the words while keeping the tone rhythm. This awakens your tonal ear — not your memorization muscle.</p>
+        </div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Market Dialogue — Buying Tomatoes</div>
+        <div class="dialogue-block">
+          <div class="pair"><div class="speaker">Buyer (Mũgũrũri):</div><div class="gk-line">Wĩ mwega? Nĩ ngwenda matimati.</div><div class="en-line">Are you well? I want tomatoes.</div></div>
+          <div class="pair"><div class="speaker">Seller (Mũthũrũri):</div><div class="gk-line">Nĩ mwega, ũrĩa ũrenda?</div><div class="en-line">I'm fine. How many do you want?</div></div>
+          <div class="pair"><div class="speaker">Buyer:</div><div class="gk-line">Nĩngwenda ithano. Beyo nĩ ĩgĩrĩ mũgwanja?</div><div class="en-line">I want five. Is the price seven?</div></div>
+          <div class="pair"><div class="speaker">Seller:</div><div class="gk-line">Rĩrĩa! Nĩ thaai — mũgwanja na inya.</div><div class="en-line">No! It's high — seven and four.</div></div>
+          <div class="pair"><div class="speaker">Buyer:</div><div class="gk-line">Wega, ũgũre.</div><div class="en-line">Fine, buy them.</div></div>
+        </div>
+        <div class="insight-box">
+          <div class="insight-box-label">🎵 Tone of Trade</div>
+          <p>Rising tone = insistence. Falling tone = concession. Flat tone = conclusion (deal reached). Record yourself mimicking the tone shapes — not just the words.</p>
+        </div>
+      </div>
+      <div class="content-section">
+        <div class="content-section-title">Market Song + Riddles</div>
+        <div class="proverb-block">
+          <div class="gk">Ĩmwe, igĩrĩ, ithatu, inya, Tũgũcũgũrĩrĩ marigu-inya!</div>
+          <div class="en">One, two, three, four — let's go buy bananas, four!</div>
+        </div>
+        <div class="content-body"><p>Number songs trained children to feel rhythm, tone, and pitch — not to memorize mechanically. The market song is also a tonal drill.</p></div>
+        <div class="insight-box">
+          <div class="insight-box-label">💭 Riddle</div>
+          <p>"Mũciĩ ũrĩ andũ igĩrĩ, ũmwe nĩ mũgima, ũmwe nĩ mũthia." — A house with two people: one alive, one dead. Answer: A pot and fire.</p>
+        </div>
+      </div>
+      <div class="goal-box">
+        <div class="goal-box-title">End-of-Week Goals</div>
+        <ul class="goal-list">
+          <li>Count from 1–20 in Gĩkũyũ with correct tonal patterns</li>
+          <li>Simulate a market bargaining conversation with rising/falling tones</li>
+          <li>Sing at least one verse of the market counting song</li>
+        </ul>
+      </div>
+    `
+  }
+};
+
+// Placeholder content for weeks 5-40
+const weekPlaceholders = {
+  5: { title: "Kikuyu Music", theme: "Sing Your Gĩkũyũ Heart", stage: "Stage 1: Awaken the Ear" },
+  6: { title: "Stage 1 Review & Ear Challenge", theme: "Consolidation & Pronunciation Quiz", stage: "Stage 1: Awaken the Ear" },
+  7: { title: "Family & Kinship", theme: "The Rhythm of Respect: Who Are You to Me?", stage: "Stage 2: Speak Before You Read" },
+  8: { title: "Homes & Architecture", theme: "Your House, Your History: The Language of Space", stage: "Stage 2: Speak Before You Read" },
+  9: { title: "Appearance & Adornment", theme: "The Clothes That Talk: Reading the Gĩkũyũ Social Code", stage: "Stage 2: Speak Before You Read" },
+  10: { title: "Health & Healing", theme: "The Ancestral Pharmacy: Balance, Body, and Spirit", stage: "Stage 2: Speak Before You Read" },
+  11: { title: "Livelihoods & Trade", theme: "The Currency of Survival: Work, Wealth, and Wĩra", stage: "Stage 2: Speak Before You Read" },
+};
+
+// Vocab data
+const vocabSections = [
+  { title: "Weeks 1–2: Greetings & Identity", words: [
+    ["Wî mwega?", "Are you well?", "mid tone"], ["Ndî mwega", "I'm fine", "mid"],
+    ["Ũhoro waku nî ũtari?", "How are you?", "rising"], ["Nîwega", "Thank you", "high"],
+    ["Gûtî", "No / not", "low"], ["Ỹe", "Yes", "high"], ["Nî", "Is / be", "neutral"],
+    ["Nîwe", "It is you", "emphatic"], ["Wakwa", "Mine", "low"], ["Ndî mûtîrîa waku", "I am your friend", "mid"]
+  ]},
+  { title: "Weeks 3–4: Market & Numbers", words: [
+    ["Mbeca", "Money", "high"], ["Irio", "Food", "mid"], ["Gũcũrũ", "To buy", "high-low"],
+    ["Gũgũra", "To sell", "low-high"], ["Kũmena", "To count", "low"],
+    ["Imwe", "One", "low"], ["Igĩrĩ", "Two", "mid"], ["Ithatu", "Three", "low"],
+    ["Inya", "Four", "high"], ["Ithano", "Five", "high-low"]
+  ]},
+  { title: "Weeks 5–6: Music & Sound", words: [
+    ["Mwomboko", "Traditional Kikuyu dance", "mid"], ["Mũthirĩgĩ", "War dance", "low"],
+    ["Kũheaga", "To sing", "low"], ["Gĩtĩtũ", "Drum", "low"], ["Kĩgongona", "Bell / instrument", "mid"],
+    ["Mũthenya", "Day", "mid"], ["Rũgendo", "Journey", "mid"], ["Kĩrîra", "Lineage", "mid"],
+    ["Mũciĩ", "Home", "low"], ["Kũgũra", "To play (instrument)", "high"]
+  ]},
+  { title: "Weeks 7–8: Family & Home", words: [
+    ["Mama", "Mother", "neutral"], ["Baba", "Father", "neutral"], ["Mwana", "Child", "low"],
+    ["Kaka", "Brother", "neutral"], ["Mũkamũ", "Wife", "mid"], ["Mũtumia", "Woman / wife", "mid"],
+    ["Mũthuri", "Man / husband", "mid"], ["Nyũmba", "House", "mid"],
+    ["Irima", "Fireplace / hearth", "mid"], ["Gĩthaku", "Compound", "mid"]
+  ]},
+  { title: "Weeks 9–10: Clothing & Hair", words: [
+    ["Kĩgamba", "Cloth / hide", "low"], ["Mũthuru", "Wrap skirt", "mid"],
+    ["Gĩtamba", "Head scarf", "low"], ["Rũracio", "Dowry", "low"],
+    ["Kũnyũrũra", "To braid", "mid"], ["Mũhũrũko", "Beauty / adornment", "mid"],
+    ["Nyoni", "Bird (symbolic)", "high"], ["Mũhîrîga", "Clan", "mid"],
+    ["Thîna", "Pain / effort", "low"], ["Kũheaga", "To decorate", "low"]
+  ]},
+  { title: "Weeks 13–16: Grammar & Proverbs", words: [
+    ["Mũoyo", "Life", "high"], ["Gũcokia", "To return", "low"],
+    ["Kũrîa", "To eat", "low"], ["Kũnyua", "To drink", "mid"],
+    ["Gũtonga", "To be rich", "low"], ["Thayu", "Peace", "mid"],
+    ["Ũiguo", "Understanding", "low"], ["Wendo", "Love", "high"],
+    ["Ndakame", "Blood", "mid"], ["Tũgĩ", "Firewood", "low"]
+  ]},
+  { title: "Weeks 17–20: Food & Health", words: [
+    ["Gĩtheri", "Maize & beans dish", "mid"], ["Mukimo", "Mashed meal", "high"],
+    ["Ũcũrũ", "Porridge", "low"], ["Thambî", "Medicine", "mid"],
+    ["Mũrimũ", "Sickness", "low"], ["Kũhoya", "To pray / ask", "low"],
+    ["Mũthigiri", "Healer", "low"], ["Ũgima", "Health / life", "mid"],
+    ["Mũtî", "Tree / herb", "mid"], ["Gĩkũrũ", "Root", "mid"]
+  ]},
+  { title: "Weeks 21–25: Storytelling & Society", words: [
+    ["Rîu", "Now", "low"], ["Twîrîa", "Let's say / story cue", "low"],
+    ["Ngai", "God", "high"], ["Kirinyaga", "Mount Kenya (sacred)", "mid"],
+    ["Mũrata", "Friend", "mid"], ["Mũrîo", "Happiness", "mid"],
+    ["Rũgano", "Story / tale", "mid"], ["Mũthoni", "Ceremonial relationship", "mid"],
+    ["Mũndũ mũrũme", "Man", "mid"], ["Mũndũ mũtumia", "Woman", "mid"]
+  ]},
+  { title: "Weeks 31–40: Culture & Diaspora", words: [
+    ["Kirîra", "Tradition", "mid"], ["Mũno", "Very / much", "low"],
+    ["Ũrathi", "Blessing", "low"], ["Ũgikũyũ", "Kikuyu culture", "mid"],
+    ["Mũgambo", "Drum / call / news", "mid"], ["Wendo wa kîrîra", "Love of culture", "phrase"],
+    ["Kũrîa na ũhoro", "To share stories", "phrase"], ["Ũrîa waku", "Your way / lifestyle", "low"],
+    ["Ũhoro wa mũno", "Great news", "phrase"], ["Gũtũmwo", "To be sent", "low"]
+  ]}
+];
+
+// ── FUNCTIONS ──
+let currentView = 'overview';
+
+function showView(view) {
+  document.getElementById('view-overview').style.display = 'none';
+  document.getElementById('view-week').style.display = 'none';
+  document.getElementById('view-vocab').style.display = 'none';
+
+  document.querySelectorAll('.week-link').forEach(l => l.classList.remove('active'));
+
+  if (view === 'overview') {
+    document.getElementById('view-overview').style.display = 'block';
+    document.querySelectorAll('.week-link')[0].classList.add('active');
+  } else if (view === 'vocab') {
+    document.getElementById('view-vocab').style.display = 'block';
+    renderVocab();
+    document.querySelectorAll('.week-link')[1].classList.add('active');
+  }
+  document.getElementById('mainContent').scrollTop = 0;
+  closeSidebar();
+}
+
+function showWeek(n) {
+  document.getElementById('view-overview').style.display = 'none';
+  document.getElementById('view-week').style.display = 'block';
+  document.getElementById('view-vocab').style.display = 'none';
+
+  document.querySelectorAll('.week-link').forEach(l => l.classList.remove('active'));
+  const allLinks = document.querySelectorAll('.week-link');
+  allLinks.forEach(l => {
+    if (l.getAttribute('onclick') === `showWeek(${n})`) l.classList.add('active');
+  });
+
+  const week = weeks[n];
+  if (week) {
+    document.getElementById('weekHeroBanner').innerHTML = week.hero;
+    document.getElementById('weekContent').innerHTML = week.content + weekNavHTML(n);
+  } else {
+    const ph = weekPlaceholders[n] || { title: `Week ${n}`, theme: 'Coming Soon', stage: '' };
+    document.getElementById('weekHeroBanner').innerHTML = `
+      <div class="hero-flag">🇰🇪</div>
+      <div class="hero-eyebrow">Week ${n} · ${ph.stage}</div>
+      <h1 class="hero-title">${ph.title}</h1>
+      <p class="hero-subtitle">${ph.theme}</p>
+    `;
+    document.getElementById('weekContent').innerHTML = `
+      <div class="lesson-header">
+        <div class="lesson-week-badge">Week ${n}</div>
+        <div class="lesson-title">${ph.title}</div>
+        <div class="lesson-theme">${ph.theme}</div>
+      </div>
+      <div class="insight-box" style="margin-top:2rem;">
+        <div class="insight-box-label">🚧 Lesson Coming Soon</div>
+        <p>This lesson is in development. Check back soon — we're building it lesson by lesson, just as a language is learned: one week at a time.</p>
+      </div>
+      ${weekNavHTML(n)}
+    `;
+  }
+  document.getElementById('mainContent').scrollTop = 0;
+  closeSidebar();
+}
+
+function weekNavHTML(n) {
+  const prev = n > 1 ? `<button class="week-nav-btn" onclick="showWeek(${n-1})">← Week ${n-1}</button>` : `<span></span>`;
+  const next = n < 40 ? `<button class="week-nav-btn" onclick="showWeek(${n+1})">Week ${n+1} →</button>` : `<span></span>`;
+  return `<div class="week-nav">${prev}${next}</div>`;
+}
+
+function renderVocab() {
+  const el = document.getElementById('vocabContent');
+  if (el.innerHTML) return;
+  el.innerHTML = vocabSections.map(s => `
+    <div class="vocab-section">
+      <div class="vocab-section-title">${s.title}</div>
+      <div class="vocab-full-grid">
+        ${s.words.map(w => `
+          <div class="vocab-card">
+            <div class="vocab-gk">${w[0]}</div>
+            <div class="vocab-en">${w[1]}</div>
+            <div class="vocab-tone">${w[2]}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+}
+</script>
+
+</body>
+</html>
